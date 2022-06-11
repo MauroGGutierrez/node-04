@@ -6,4 +6,7 @@ export class UsersRoutes extends CommonRoutesConfig {
     // hijo
     super(app, "UsersRoutes"); //el super se comunica con el padre osea el CommonRoutesConfig
   }
+  configureRoutes() {
+    return this.app;
+  }
 }
