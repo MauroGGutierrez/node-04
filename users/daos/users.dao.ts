@@ -40,9 +40,10 @@ class UsersDao {
 
   async patchUserById(userId: string, user: PatchUserDto) {
     const objIndex = this.users.findIndex(
+      //aqui me busca el usuario
       (obj: { id: string }) => obj.id === userId
     );
-    let currentUser = this.users[objIndex];
+    let currentUser = this.users[objIndex]; //aqui me esta diciendo que haga una copia
     const allowedPatchFields = [
       "password",
       "firstName",

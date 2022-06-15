@@ -1,37 +1,37 @@
-import UsersDao from '../daos/users.dao';
-import { CRUD } from '../../common/interfaces/crud.interface';
-import { CreateUserDto } from '../dto/create.user.dto';
-import { PutUserDto } from '../dto/put.user.dto';
-import { PatchUserDto } from '../dto/patch.user.dto';
+import UsersDao from "../daos/users.dao";
+import { CRUD } from "../../common/interfaces/crud.interface";
+import { CreateUserDto } from "../dto/create.user.dto";
+import { PutUserDto } from "../dto/put.user.dto";
+import { PatchUserDto } from "../dto/patch.user.dto";
 
 class UsersService implements CRUD {
-    async create(resource: CreateUserDto) {
-        return UsersDao.addUser(resource);
-    }
+  async create(resource: CreateUserDto) {
+    return UsersDao.addUser(resource); // string
+  }
 
-    async deleteById(id: string) {
-        return UsersDao.removeUserById(id);
-    }
+  async deleteById(id: string) {
+    return UsersDao.removeUserById(id); // string
+  }
 
-    async list(limit: number, page: number) {
-        return UsersDao.getUsers();
-    }
+  async list(limit: number, page: number) {
+    return UsersDao.getUsers(); // un array de CreateUserDto[]
+  }
 
-    async patchById(id: string, resource: PatchUserDto) {
-        return UsersDao.patchUserById(id, resource);
-    }
+  async patchById(id: string, resource: PatchUserDto) {
+    return UsersDao.patchUserById(id, resource); // string
+  }
 
-    async readById(id: string) {
-        return UsersDao.getUserById(id);
-    }
+  async readById(id: string) {
+    return UsersDao.getUserById(id); // CreateUserDto | undefined
+  }
 
-    async putById(id: string, resource: PutUserDto) {
-        return UsersDao.putUserById(id, resource);
-    }
+  async putById(id: string, resource: PutUserDto) {
+    return UsersDao.putUserById(id, resource); // string
+  }
 
-    async getUserByEmail(email: string) {
-        return UsersDao.getUserByEmail(email);
-    }
+  async getUserByEmail(email: string) {
+    return UsersDao.getUserByEmail(email); // devuelver un CreateUserDto | undefined
+  }
 }
 
 export default new UsersService();
