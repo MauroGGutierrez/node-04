@@ -1,6 +1,6 @@
 import express from "express";
-import usersService from "../../users/services/users.service";
-import * as argon2 from "argon2";
+import usersService from "../../users/services/users.service"; //para llamar a los servicios // ruta- controlador- servicios -dao
+import * as argon2 from "argon2"; // para incriptar la contraseña
 
 class AuthMiddleware {
   async verifyUserPassword(
