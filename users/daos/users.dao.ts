@@ -47,7 +47,7 @@ class UsersDao {
   }
 
   async getUserById(userId: string) {
-    return this.User.findOne({ _id: userId }).populate("User").exec(); //populate me quiere decir llena o llenalo
+    return this.User.findOne({ _id: userId }).exec(); //populate me quiere decir llena o llenalo
   }
 
   async getUsers(limit = 25, page = 0) {
@@ -62,7 +62,7 @@ class UsersDao {
       { _id: userId }, // filtro
       { $set: userFields }, // una vez q encuentra al usuario , te tiene q mandar todos sus datos // valores
       { new: true } // esto me dice que si busca un usuario y no lo encuentre , con esto me lo crea // crear
-    ).exec();
+    ).exec(); // exec me indiga donde ocurrio l error
 
     return existingUser;
   }
