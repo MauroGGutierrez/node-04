@@ -5,6 +5,9 @@ import { CommonRoutesConfig } from "../common/common.routes.config";
 import BodyValidationMiddleware from "../common/middleware/body.validation.middleware";
 import UsersController from "./controllers/users.controller";
 import UsersMiddleware from "./middleware/users.middleware";
+import jwtMiddleware from "../auth/middleware/jwt.middleware";
+import permissionMiddleware from "../common/middleware/common.permission.middleware";
+import { PermissionFlag } from "../common/middleware/common.permissionflag.enum";
 
 export class UsersRoutes extends CommonRoutesConfig {
   constructor(app: express.Application) {
@@ -14,7 +17,13 @@ export class UsersRoutes extends CommonRoutesConfig {
   configureRoutes(): express.Application {
     this.app
       .route(`/users`)
-      .get(UsersController.listUsers)
+      .get(
+        jwtMiddleware.validJWTNeeded,
+        permissionMiddleware.permissionFlagRequired(
+          PermissionFlag.ADMIN_PERMISSION
+        ),
+        UsersController.listUsers
+      )
       .post(
         body("email").isEmail(),
         body("password")
@@ -28,7 +37,11 @@ export class UsersRoutes extends CommonRoutesConfig {
     this.app.param(`userId`, UsersMiddleware.extractUserId);
     this.app
       .route(`/users/:userId`)
-      .all(UsersMiddleware.validateUserExists)
+      .all(
+        UsersMiddleware.validateUserExists,
+        jwtMiddleware.validJWTNeeded,
+        permissionMiddleware.onlySameUserOrAdminCanDoThisAction
+      )
       .get(UsersController.getUserById)
       .delete(UsersController.removeUser);
 
@@ -42,6 +55,9 @@ export class UsersRoutes extends CommonRoutesConfig {
       body("permissionFlags").isInt(),
       BodyValidationMiddleware.verifyBodyFieldsErrors,
       UsersMiddleware.validateSameEmailBelongToSameUser,
+      permissionMiddleware.permissionFlagRequired(
+        PermissionFlag.PAID_PERMISSION
+      ),
       UsersController.put,
     ]);
 
@@ -56,6 +72,9 @@ export class UsersRoutes extends CommonRoutesConfig {
       body("permissionFlags").isInt().optional(),
       BodyValidationMiddleware.verifyBodyFieldsErrors,
       UsersMiddleware.validatePatchEmail,
+      permissionMiddleware.permissionFlagRequired(
+        PermissionFlag.PAID_PERMISSION
+      ),
       UsersController.patch,
     ]);
 
