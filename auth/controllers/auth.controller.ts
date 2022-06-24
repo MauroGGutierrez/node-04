@@ -26,6 +26,7 @@ class AuthController {
         .digest("base64");
       req.body.refreshKey = salt.export();
       const token = jwt.sign(req.body, jwtSecret, {
+        // sign significa que lo firma con jwtsecret
         expiresIn: tokenExpirationInSeconds,
       });
       return res.status(201).send({ accessToken: token, refreshToken: hash });
